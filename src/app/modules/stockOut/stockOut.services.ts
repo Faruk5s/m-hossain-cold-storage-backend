@@ -21,14 +21,34 @@ const createStockOutIntoDB = async (data: TStockOut) => {
   return result;
 };
 
-const getAllStockOut = async (query:Record<string,unknown>) => {
+const getAllStockOut = async (query: Record<string, unknown>) => {
+  let bookingType: string | undefined;
 
- const result = new QueryBuilder(StockOutModel.find().populate({path:'bookingId'}).sort({createdAt:-1}),query).dateRange().filter()
+  if (query.bookingType) {
+    bookingType = query.bookingType as string;
+    delete query.bookingType; // ✅ prevent QueryBuilder from trying to filter it
+  }
 
-  const data= await result.modelQuery;
- 
- return data;
+  const result = new QueryBuilder(
+    StockOutModel.find()
+      .populate({
+        path: "bookingId",
+        match: bookingType ? { bookingType } : {}, // ✅ filter booking here
+      })
+      .sort({ createdAt: -1 }),
+    query
+  )
+    .dateRange()
+    .filter();
 
+  const data = await result.modelQuery;
+
+  // ✅ remove records where booking didn’t match
+  const filteredData = bookingType
+    ? data.filter(item => item.bookingId !== null)
+    : data;
+
+  return filteredData;
 };
 const getCustomStockOutReport = async (query:Record<string,unknown>) => {
 const match = buildDateMatch(query);

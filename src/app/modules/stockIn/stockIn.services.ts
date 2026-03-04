@@ -16,13 +16,22 @@ const createStockInIntoDB = async (payload: TStockIn) => {
 };
 
 const getAllStockIn = async (query:Record<string,unknown>) => {
+let bookingType: string | undefined;
 
+  if (query.bookingType) {
+    bookingType = query.bookingType as string;
+    delete query.bookingType; // ✅ prevent QueryBuilder from trying to filter it
+  }
 let result;
-  result = new QueryBuilder(StockInModel.find().populate({path:'bookingId'}),query).dateRange().filter()
+  result = new QueryBuilder(StockInModel.find().populate({path:'bookingId',match: bookingType ? { bookingType } : {},}),query).dateRange().filter()
 
 
   const data= await result.modelQuery;
- return data
+const filteredData = bookingType
+    ? data.filter(item => item.bookingId !== null)
+    : data;
+
+  return filteredData;
 };
 
 const getCustomStockInReport = async (query:Record<string,unknown>) => {
