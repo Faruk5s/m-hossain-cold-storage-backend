@@ -44,7 +44,7 @@ const getAllBookings = async (query:Record<string,unknown>) => {
 
   const result = new QueryBuilder(BookingModel.find().sort({createdAt:-1}),query).dateRange().filter();
   const data= await  result.modelQuery;
-  console.log(data);
+ 
   return data
 };
 const getCustomBookingsReport = async (query:Record<string,unknown>) => {

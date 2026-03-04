@@ -13,7 +13,6 @@ const createStockOutIntoDB = async (data: TStockOut) => {
         srNo: data.srNo,
       }
     );
-console.log(stockIn)
   if(stockIn.length < 1){
     throw new Error('No matching Stock In record found for the provided sr no');
   }
@@ -27,13 +26,13 @@ const getAllStockOut = async (query:Record<string,unknown>) => {
  const result = new QueryBuilder(StockOutModel.find().populate({path:'bookingId'}).sort({createdAt:-1}),query).dateRange().filter()
 
   const data= await result.modelQuery;
-  console.log(data,'data00000')
+ 
  return data;
 
 };
 const getCustomStockOutReport = async (query:Record<string,unknown>) => {
 const match = buildDateMatch(query);
-console.log(match)
+
   const pipeline: PipelineStage[] = [
     { $match: match },
     {
@@ -97,7 +96,7 @@ console.log(match)
   ];
 
   const [meta] = await StockOutModel.aggregate(pipeline);
-console.log(meta)
+
   return (
     meta ?? {
        totalStockOuts: 0,

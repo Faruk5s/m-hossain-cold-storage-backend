@@ -17,7 +17,7 @@ const createStockOut = catchAsync(async (req, res) => {
 
 const getAllStockOut = catchAsync(async (req, res) => {
   const query=req.query
-  console.log(query,'query')
+
   const result = await StockOutServices.getAllStockOut(query);
 
   res.status(200).json({

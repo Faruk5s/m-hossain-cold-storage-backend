@@ -58,7 +58,7 @@ const updateStockIn = catchAsync(async (req, res) => {
 const deleteStockIn = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await StockInServices.deleteStockInFromDB(id);
-console.log(result)
+
   res.status(200).json({
     success: true,
     message: "Stock In deleted successfully",
