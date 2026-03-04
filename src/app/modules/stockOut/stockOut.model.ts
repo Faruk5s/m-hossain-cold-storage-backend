@@ -5,6 +5,7 @@ const stockOutSchema = new Schema<TStockOut>(
   {
     srNo: { type: String, required: true },
     bookingNo: { type: String, required: true },
+    doNo: { type: String, required: true },
     bookingId: { type: Schema.Types.ObjectId, ref:"Booking", required: true },
     bagsOut: { type: Number, required: true },
     date: { type: Date, required: true },

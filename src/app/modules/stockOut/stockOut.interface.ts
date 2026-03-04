@@ -6,6 +6,7 @@ export type TStockOut = {
   bookingId: Types.ObjectId;
   bagsOut: number;
   date: Date;
+  doNo:string;
   createdAt?: Date;
   updatedAt?: Date;
 };
