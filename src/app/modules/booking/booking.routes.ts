@@ -10,8 +10,6 @@ const router = express.Router();
 // Create Booking
 router.post(
   '/',
-  auth,
-  isAdmin,
   validateRequest(bookingValidation.createBookingValidationSchema),
   BookingController.createBooking,
 );
