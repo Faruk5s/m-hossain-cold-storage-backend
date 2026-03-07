@@ -10,8 +10,11 @@ import { AuthServices } from "./auth.services";
 
   res.cookie("token", result.token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production"?"none":'strict',
+    // secure: process.env.NODE_ENV === "production",
+    // sameSite: process.env.NODE_ENV === "production"?"none":'strict',
+    secure: true,
+    sameSite: 'none',
+     domain: ".render.com",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
