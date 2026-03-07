@@ -4,6 +4,8 @@ import { BookingRoutes } from '../modules/booking/booking.routes';
 import { stockInRoutes } from '../modules/stockIn/stockIn.routes';
 import { stockOutRoutes } from '../modules/stockOut/stockOut.routes';
 import { statisticsRoutes } from '../modules/statistics/statistics.routes';
+import { userRoutes } from '../modules/users/user.routes';
+import { AuthRoutes } from '../modules/auth/auth.routes';
 
 
 const router = express.Router();
@@ -28,6 +30,14 @@ const moduleRoutes = [
   {
     path: '/statistics',
     routes: statisticsRoutes,
+  },
+  {
+    path: '/users',
+    routes: userRoutes,
+  },
+  {
+    path: '/auth',
+    routes: AuthRoutes,
   },
 ];
 
