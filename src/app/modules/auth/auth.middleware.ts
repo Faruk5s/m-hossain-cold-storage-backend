@@ -37,6 +37,8 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
   const user = req?.user;
 
+  console.log('user roler from middle ware',req.user)
+
   if (!user || user.role !== "admin") {
     return res.status(403).json({
       message: "Admin access only",
