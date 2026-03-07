@@ -16,8 +16,7 @@ router.post(
 // Get All Customers
 router.get(
   '/',
-   auth,
-    isAdmin,
+   
   UserController.getUsers,
 );
 
