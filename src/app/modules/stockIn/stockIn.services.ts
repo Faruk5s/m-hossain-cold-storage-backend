@@ -31,6 +31,7 @@ const filteredData = bookingType
     ? data.filter(item => item.bookingId !== null)
     : data;
 
+    filteredData.sort((a, b) => Number(a.srNo) - Number(b.srNo));
   return filteredData;
 };
 

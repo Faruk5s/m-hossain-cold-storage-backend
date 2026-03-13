@@ -42,10 +42,10 @@ const createBookingIntoDB = async (payload: TBooking) => {
 
 const getAllBookings = async (query:Record<string,unknown>) => {
 
-  const result = new QueryBuilder(BookingModel.find().sort({createdAt:-1}),query).dateRange().filter();
+  const result = new QueryBuilder(BookingModel.find().sort({createdAt:1}),query).dateRange().filter();
   const data= await  result.modelQuery;
- 
-  return data
+ const filterData= data.sort((a, b) => Number(a.bookingNo) - Number(b.bookingNo));
+  return filterData
 };
 const getCustomBookingsReport = async (query:Record<string,unknown>) => {
 const match = buildDateMatch(query);
