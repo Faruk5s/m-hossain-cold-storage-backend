@@ -23,7 +23,7 @@ let bookingType: string | undefined;
     delete query.bookingType; // ✅ prevent QueryBuilder from trying to filter it
   }
 let result;
-  result = new QueryBuilder(StockInModel.find().populate({path:'bookingId',match: bookingType ? { bookingType } : {},}),query).dateRange().filter()
+  result = new QueryBuilder(StockInModel.find().limit(100).populate({path:'bookingId',match: bookingType ? { bookingType } : {},}),query).dateRange().filter()
 
 
   const data= await result.modelQuery;
