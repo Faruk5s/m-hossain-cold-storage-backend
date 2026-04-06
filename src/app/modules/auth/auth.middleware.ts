@@ -11,8 +11,8 @@ declare global {
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
 
-  const token = req.cookies?.token;
-
+  const token = req.headers.authorization
+ console.log(token,'token form middleware')
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized access",
@@ -23,6 +23,8 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
 
     req.user = decoded;
+
+    console.log(req.user,'user')
 
     next();
   } catch (err) {
