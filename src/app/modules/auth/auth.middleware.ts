@@ -12,7 +12,6 @@ declare global {
 export const auth = (req: Request, res: Response, next: NextFunction) => {
 
   const token = req.headers.authorization
- console.log(token,'token form middleware')
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized access",
@@ -24,7 +23,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
     req.user = decoded;
 
-    console.log(req.user,'user')
 
     next();
   } catch (err) {
@@ -39,7 +37,6 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
   const user = req?.user;
 
-  console.log('user roler from middle ware',req.user)
 
   if (!user || user.role !== "admin") {
     return res.status(403).json({
