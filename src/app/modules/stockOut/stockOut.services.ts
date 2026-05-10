@@ -129,8 +129,15 @@ const match = buildDateMatch(query);
 };
 
 const getStockOutById = async (id: string) => {
-  const result = await StockOutModel.findById( id );
-  return result;
+  const result = await StockOutModel.findById( id ).populate({
+        path: "bookingId",
+      });
+
+     
+
+      const stockIn=await StockInModel.findOne({srNo:result?.srNo})
+    
+  return {result,srHolderName:stockIn?.srHolderName};
 };
 
 const getBookingDetailsBySrNo= async(srNo:string)=>{
