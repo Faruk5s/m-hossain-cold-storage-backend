@@ -36,7 +36,7 @@ const getAllStockOut = async (query: Record<string, unknown>) => {
         path: "bookingId",
         match: bookingType ? { bookingType } : {},
       })
-      .sort({ createdAt: -1 }),
+      .sort({ doNo: 1 }),
     query
   )
     .dateRange()
