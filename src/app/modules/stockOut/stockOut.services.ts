@@ -26,14 +26,15 @@ const getAllStockOut = async (query: Record<string, unknown>) => {
 
   if (query.bookingType) {
     bookingType = query.bookingType as string;
-    delete query.bookingType; // ✅ prevent QueryBuilder from trying to filter it
+    delete query.bookingType;
   }
 
+  // 🔹 Step 1: get StockOut
   const result = new QueryBuilder(
     StockOutModel.find()
       .populate({
         path: "bookingId",
-        match: bookingType ? { bookingType } : {}, // ✅ filter booking here
+        match: bookingType ? { bookingType } : {},
       })
       .sort({ createdAt: -1 }),
     query
@@ -41,14 +42,33 @@ const getAllStockOut = async (query: Record<string, unknown>) => {
     .dateRange()
     .filter();
 
-  const data = await result.modelQuery;
+  const stockOutData = await result.modelQuery;
 
-  // ✅ remove records where booking didn’t match
-  const filteredData = bookingType
-    ? data.filter(item => item.bookingId !== null)
-    : data;
+  // 🔹 Step 2: filter booking mismatch
+  const filteredStockOut = bookingType
+    ? stockOutData.filter(item => item.bookingId !== null)
+    : stockOutData;
 
-  return filteredData;
+  // 🔹 Step 3: extract SR numbers
+  const srNos = filteredStockOut.map(item => item.srNo);
+
+  // 🔹 Step 4: get StockIn data
+  const stockIns = await StockInModel.find({
+    srNo: { $in: srNos },
+  }).select("srNo srHolderName");
+
+  // 🔹 Step 5: create map
+  const stockInMap = new Map(
+    stockIns.map(item => [item.srNo, item.srHolderName])
+  );
+
+  // 🔹 Step 6: merge data
+  const finalData = filteredStockOut.map(item => ({
+    ...item.toObject(),
+    srHolderName: stockInMap.get(item.srNo) || null,
+  }));
+
+  return finalData;
 };
 const getCustomStockOutReport = async (query:Record<string,unknown>) => {
 const match = buildDateMatch(query);
